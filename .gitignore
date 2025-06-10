@@ -1,0 +1,27 @@
+# Ignore CLion & CMake build files
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+*.cmake
+
+# Ignore executables and object files
+*.exe
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+*.a
+*.lib
+
+# Ignore user settings
+.idea/
+*.iml
+
+# Ignore generated files
+compile_commands.json
+
+# Ignore logs and crash dumps
+*.log
+core
