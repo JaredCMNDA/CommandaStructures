@@ -1,7 +1,9 @@
 #include <iostream>
 #include "linkedlist.h"
 #include "queue.h"
+#include "doublelinkedlist.h"
 using namespace std;
+using namespace CommandaStructures;
 // This is a simple c++ program for relearning queue, stacks, linked lists, trees, etc.
 
 void linkedListTest() {
@@ -23,15 +25,15 @@ void linkedListTest() {
     // Create instances of the linked lists
     LinkedList<SpeedData> speedList;
     LinkedList<TurbidityData> turbidityList;
-    // Append some data to the speed linked list
-    speedList.append({55.5, 1622547800}); // Speed of 55.5 at timestamp 1622547800
-    speedList.append({60.0, 1622547860}); // Speed of 60.0 at timestamp 1622547860
-    speedList.append({65.2, 1622547920}); // Speed of 65.2 at timestamp 1622547920
+    // insert some data to the speed linked list
+    speedList.insert({55.5, 1622547800}); // Speed of 55.5 at timestamp 1622547800
+    speedList.insert({60.0, 1622547860}); // Speed of 60.0 at timestamp 1622547860
+    speedList.insert({65.2, 1622547920}); // Speed of 65.2 at timestamp 1622547920
 
-    // Append some data to the turbidity linked list
-    turbidityList.append({1.2, 1622547800}); // Turbidity of 1.2 at timestamp 1622547800
-    turbidityList.append({1.5, 1622547860}); // Turbidity of 1.5 at timestamp 1622547860
-    turbidityList.append({1.8, 1622547920}); // Turbidity of 1.8 at timestamp 1622547920
+    // insert some data to the turbidity linked list
+    turbidityList.insert({1.2, 1622547800}); // Turbidity of 1.2 at timestamp 1622547800
+    turbidityList.insert({1.5, 1622547860}); // Turbidity of 1.5 at timestamp 1622547860
+    turbidityList.insert({1.8, 1622547920}); // Turbidity of 1.8 at timestamp 1622547920
 
     // Display the speed linked list
     std::cout << "Speed Linked List:" << std::endl;
@@ -127,9 +129,81 @@ void queueTemplateTest() {
     std::cout << "Is queue empty? " << (dataQueue.isEmpty() ? "Yes" : "No") << std::endl;
 }
 
+void DoubleLinkedListTest() {
+    struct NodeData {
+        int id;
+        string name;
+
+        // Define equality operator
+        bool operator==(const NodeData& other) const {
+            return id == other.id && name == other.name;
+        }
+
+        string display() const {
+            return "ID: " + std::to_string(id) + ", Name: " + name;
+        }
+    };
+    DoubleLinkedList<NodeData> list;
+
+    // Insert some nodes
+    list.insert({1, "Node1"}, DoubleLinkedList<NodeData>::HEAD);
+    list.insert({2, "Node2"}, DoubleLinkedList<NodeData>::TAIL);
+    list.insert({3, "Node3"}, 1); // Insert at position 1 (between Node1 and Node2)
+    // Display the list
+    std::cout << "Double Linked List:" << std::endl;
+    list.display([](const NodeData& data) {
+        std::cout << data.display() << std::endl;
+    });
+    // Remove a node
+    list.remove({2, "Node2"}); // Remove Node2 which is the tail, 2nd node
+    // Display the list after removal
+    std::cout << "Double Linked List after removal:" << std::endl;
+    list.display([](const NodeData& data) {
+        std::cout << data.display() << std::endl;
+    });
+    // Check the size of the list
+    std::cout << "Size of the list: " << list.size() << std::endl;
+    // Check if the head and tail are correct
+    if (list.getHead()) {
+        std::cout << "Head: " << list.getHead()->getData().display() << std::endl;
+    } else {
+        std::cout << "Head is null." << std::endl;
+    }
+    if (list.getTail()) {
+        std::cout << "Tail: " << list.getTail()->getData().display() << std::endl;
+    } else {
+        std::cout << "Tail is null." << std::endl;
+    }
+    // Find a node
+    NodeData searchData = {3, "Node3"};
+    Node<NodeData>* foundNode = list.findNode(searchData);
+    if (foundNode) {
+        std::cout << "Found node: " << foundNode->getData().display() << std::endl;
+    } else {
+        std::cout << "Node not found." << std::endl;
+    }
+    // Try to find a node that doesn't exist
+    NodeData notFoundData = {4, "Node4"};
+    foundNode = list.findNode(notFoundData);
+    if (foundNode) {
+        std::cout << "Found node: " << foundNode->getData().display() << std::endl;
+    } else {
+        std::cout << "Node not found." << std::endl;
+    }
+    // Clear the list
+    list.remove({1, "Node1"}); // Remove Node1 which is the head, 1st node
+    list.remove({3, "Node3"}); // Remove Node3 which is the only node left
+    std::cout << "Double Linked List after clearing:" << std::endl;
+    list.display([](const NodeData& data) {
+        std::cout << data.display() << std::endl;
+    });
+    std::cout << "Size of the list after clearing: " << list.size() << std::endl;
+}
+
 int main() {
 
-    queueTemplateTest();
+    DoubleLinkedListTest();
+
     return 0;
 
 }
