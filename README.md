@@ -5,7 +5,8 @@ CommandaStructures is a personal C++ library of fundamental data structures, des
 ## Features
 
 - **Linked List**: Generic singly linked list implementation.
-- **Queue**: Generic queue built on top of the linked list.
+- **Double Linked List**: Generic doubly linked list implementation.
+- **Queue**: Generic queue built on top of the singly linked list.
 - *(Planned: Stack, Trees, and other data structures)*
 
 ## Why?
@@ -18,24 +19,36 @@ When working on various C++ projects, it's common to need basic data structures.
 2. **Include** the headers you need in your source files:
    ```cpp
    #include "linkedlist.h"
+   #include "doublelinkedlist.h"
    #include "queue.h"
    ```
 3. **Use the data structures** as templates with your own types:
    ```cpp
    LinkedList<int> intList;
    Queue<std::string> stringQueue;
+   DoubleLinkedList<double> doubleList;
+   ```
+4. **Example: Using DoubleLinkedList**
+   ```cpp
+   struct MyData {
+       int id;
+       std::string name;
+       bool operator==(const MyData& other) const { return id == other.id && name == other.name; }
+   };
+
+   DoubleLinkedList<MyData> list;
+   list.insert({1, "Alice"}, DoubleLinkedList<MyData>::HEAD);
+   list.insert({2, "Bob"}, DoubleLinkedList<MyData>::TAIL);
+   list.remove({1, "Alice"});
    ```
 
-See `src/main.cpp` for example usage and tests.
+See `src/main.cpp` for more example usage and tests.
 
-## Building
+## Project Structure
 
-This project uses CMake. To build:
-
-```sh
-cmake -S . -B build
-cmake --build build
-```
+- `include/` — Header files for all data structures (`linkedlist.h`, `doublelinkedlist.h`, `queue.h`, `node.h`)
+- `src/` — Example usage and tests (`main.cpp`)
+- `CMakeLists.txt` — Build configuration (if using CMake)
 
 ## License
 
