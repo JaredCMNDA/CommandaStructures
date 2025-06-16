@@ -34,6 +34,16 @@ namespace CommandaStructures {
         T& back() const;                                       // Returns the last element without removing it
         [[nodiscard]] int getSize() const {return list.getSize();};             // Returns the number of elements in the deque
         [[nodiscard]] bool isEmpty() const;                                  // Checks if the deque is empty
+        // Forward iterator support
+        auto begin()       { return list.begin(); }
+        auto end()         { return list.end(); }
+        auto cbegin() const { return list.cbegin(); }
+        auto cend() const   { return list.cend(); }
+
+        // Reverse iterator support
+        auto rbegin()      { return list.rbegin(); }
+        auto rend()        { return list.rend(); }
+
     private:                                                   
         DoubleLinkedList<T> list;                              // Double linked list to store the elements of the deque
     };

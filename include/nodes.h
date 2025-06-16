@@ -5,8 +5,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-namespace CommandaStructures {
-
+namespace CommandaStructures::Single {
     /* Linked List Node Class */
     /*
     If you want each node to store multiple types of data (e.g., color, speed, size, position, heading, etc.), you should define a struct or class that contains all the fields you need, and then use that struct/class as the template parameter for your Node and LinkedList.
@@ -25,14 +24,13 @@ namespace CommandaStructures {
      */
 
     template<typename T> // Template class for Node (allows for different data types)
-    class Node {
+    class SingleNode {
         // Node class to represent each element in the linked list
         // It contains data of type T and a pointer to the next node
     public:
         T data;
-        Node<T>* next;
-        Node<T>* prev;
-        explicit Node(const T& value);
+        SingleNode<T>* next;
+        explicit SingleNode(const T& value);
         T& getData() { return data; } // Getter for data
     };
 
@@ -43,8 +41,36 @@ namespace CommandaStructures {
      * Returns: void - No return value.
      */
     template<typename T>
-    Node<T>::Node(const T& value) : data(value), next(nullptr) {}
-
+    SingleNode<T>::SingleNode(const T& value) : data(value), next(nullptr) {}
 
 }
+
+namespace CommandaStructures::Double {
+    /*
+     * Double Node Class
+     * Used for double linked lists where each node has a pointer to both the next and previous nodes.
+     * Did two separate classes for single and double nodes to keep the code clean and maintainable and reduce memory usage
+     * This class inherits from SingleNode and adds a pointer to the previous node.
+     */
+    template<typename T>
+    class DoubleNode {
+    public:
+        T data;
+        DoubleNode<T>* next;
+        DoubleNode<T>* prev;
+        explicit DoubleNode(const T& value);
+        T& getData() { return data; } // Getter for data
+    };
+
+    /*
+     * Name: DoubleNode constructor
+     * Description: Initializes a double node with the given value, sets the next pointer to nullptr, and the previous pointer to nullptr.
+     * Parameters: value - The value to be stored in the node.
+     * Returns: void - No return value.
+     */
+    template<typename T>
+    DoubleNode<T>::DoubleNode(const T& value) : data(value), next(nullptr), prev(nullptr) {}
+
+}
+
 #endif //NODE_H

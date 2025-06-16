@@ -27,6 +27,15 @@ namespace CommandaStructures {
         T& top() const;              // Returns the top element of the stack without removing it
         [[nodiscard]] int getSize() const {return list.getSize();};         // Returns the number of elements in the stack
         [[nodiscard]] bool isEmpty() const;        // Checks if the stack is empty
+        // Forward iterator support
+        auto begin()       { return list.begin(); }
+        auto end()         { return list.end(); }
+        auto cbegin() const { return list.cbegin(); }
+        auto cend() const   { return list.cend(); }
+
+        auto crbegin() const { return list.rbegin(); }
+        auto crend() const   { return list.rend(); }
+
     private:
         LinkedList<T> list;          // Linked list to store the elements of the stack
     };

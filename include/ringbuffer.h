@@ -43,6 +43,15 @@ namespace CommandaStructures {
         [[nodiscard]] bool isOverwriteOnly() const {return overwriteOnly;};    // Checks if the buffer is in overwrite-only mode
         [[nodiscard]] size_t capacity() const {return maxCapacity;};         // Returns the maximum number of elements the buffer can hold
         void resize(size_t newCapacity); // Resizes the buffer to a new capacity, preserving existing elements if possible
+        // Forward iterator support
+        auto begin()       { return list.begin(); }
+        auto end()         { return list.end(); }
+        auto cbegin() const { return list.cbegin(); }
+        auto cend() const   { return list.cend(); }
+
+        // Reverse iterator support
+        auto rbegin()      { return list.rbegin(); }
+        auto rend()        { return list.rend(); }
     private:
         LinkedList<T> list;              // Linked list to store the elements of the buffer
         size_t maxCapacity;              // Maximum number of elements the buffer can hold

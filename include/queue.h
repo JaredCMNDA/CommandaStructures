@@ -29,6 +29,18 @@ namespace CommandaStructures {
         T& back() const;                            // Returns the last element without removing it
         [[nodiscard]] int getSize() const {return list.getSize();};       // Returns the number of elements in the queue
         [[nodiscard]] bool isEmpty() const;                          // Checks if the queue is empty
+        // Forward iterator support
+        auto begin()       { return list.begin(); }
+        auto end()         { return list.end(); }
+        auto cbegin() const { return list.cbegin(); }
+        auto cend() const   { return list.cend(); }
+
+        // Reverse iterator support
+        auto rbegin()      { return list.rbegin(); }
+        auto rend()        { return list.rend(); }
+        auto crbegin() const { return list.rbegin(); }
+        auto crend() const   { return list.rend(); }
+
     private:
         LinkedList<T> list;                            // Linked list to store the elements of the queue
     };
@@ -77,7 +89,7 @@ namespace CommandaStructures {
         if (isEmpty()) {
             throw std::out_of_range("Queue is empty");
         }
-        Node<T>* headNode = list.getHead();
+        SingleNode<T>* headNode = list.getHead();
         T value = headNode->getData();
         list.remove(value);
         return value;
@@ -110,7 +122,7 @@ namespace CommandaStructures {
         if (isEmpty()) {
             throw std::out_of_range("Queue is empty");
         }
-        Node<T>* current = list.getHead();
+        SingleNode<T>* current = list.getHead();
         while (current->next) {
             current = current->next;
         }

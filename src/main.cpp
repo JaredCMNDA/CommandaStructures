@@ -10,6 +10,8 @@
 
 using namespace std;
 using namespace CommandaStructures;
+using namespace CommandaStructures::Double;
+using namespace CommandaStructures::Single;
 // This is a simple c++ program for relearning queue, stacks, linked lists, trees, etc.
 
 /*TO DO:
@@ -24,14 +26,14 @@ void linkedListTest() {
         double speed;
         double timestamp; // Timestamp of the speed measurement
     };
-    Node<SpeedData>* speedHead = nullptr;
+    SingleNode<SpeedData>* speedHead = nullptr;
 
     // Turbidity sensor linked list
     struct TurbidityData {
         double turbidity;
         double timestamp; // Timestamp of the turbidity measurement
     };
-    Node<TurbidityData>* turbidityHead = nullptr;
+    SingleNode<TurbidityData>* turbidityHead = nullptr;
 
     // Create instances of the linked lists
     LinkedList<SpeedData> speedList;
@@ -187,7 +189,7 @@ void doubleLinkedListTest() {
     }
     // Find a node
     NodeData searchData = {3, "Node3"};
-    Node<NodeData>* foundNode = list.findNode(searchData);
+    DoubleNode<NodeData>* foundNode = list.findNode(searchData);
     if (foundNode) {
         std::cout << "Found node: " << foundNode->getData().display() << std::endl;
     } else {
