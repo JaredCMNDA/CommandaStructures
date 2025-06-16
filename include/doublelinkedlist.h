@@ -18,27 +18,29 @@ namespace CommandaStructures {
         ~DoubleLinkedList();
         void insert(const T& value, int spot = TAIL); // Append a new node with the given value to the end of the list (spot is optional)
         void remove(const T& value);                  // Remove the first node with the given value from the list
-        int size() const;                             // Return the number of nodes in the linked list
         template<typename Func>                       // Function to display the contents of the linked list using a custom function
         void display(Func func) const;                // Display the contents using a custom function
         Node<T>* getHead() const { return head; }     // Public getter for head
         Node<T>* getTail() const { return tail; }     // Public getter for tail
+        [[nodiscard]] size_t getSize() const {return size;}         // Public getter for size
+
         Node<T>* findNode(const T& value) const;      // Find a node with the given value and return a pointer to it
         enum Spot {
             HEAD = 0, // Enum to define positions for appending nodes
             TAIL = -1 // TAIL is used to append at the end of the list (default behavior)
         };
     private:
+        size_t size;   // Size of the double linked list
         Node<T>* head; // Pointer to the first node in the list
         Node<T>* tail; // Pointer to the last node in the list
         // Enum to define positions for appending nodes
 
-        void setNext(Node<T>* node, Node<T>* nextNode) {
+        static void setNext(Node<T>* node, Node<T>* nextNode) {
             if (node) {
                 node->next = nextNode; // Set the next pointer of the current node
             }
         }
-        void setPrev(Node<T>* node, Node<T>* prevNode) {
+        static void setPrev(Node<T>* node, Node<T>* prevNode) {
             if (node) {
                 node->prev = prevNode; // Set the previous pointer of the current node
             }
@@ -52,7 +54,7 @@ namespace CommandaStructures {
      * Returns: void - No return value.
      */
     template<typename T>
-    DoubleLinkedList<T>::DoubleLinkedList() : head(nullptr), tail(nullptr) {}
+    DoubleLinkedList<T>::DoubleLinkedList() : size(0), head(nullptr), tail(nullptr) {}
 
     /*
  * Name: DoubleLinkedList destructor
@@ -68,7 +70,9 @@ namespace CommandaStructures {
             delete current; // Delete the current node
             current = nextNode; // Move to the next node
         }
+        size = 0; // Reset size to zero
         head = nullptr; // Set head to nullptr after deletion
+        tail = nullptr; // Set tail to nullptr after deletion
     }
 
     /*
@@ -89,6 +93,7 @@ namespace CommandaStructures {
             if (!tail) { // If the list was empty, set the tail to the new node
                 tail = newNode;
             }
+            size++;
             return;
         }
         // If the spot is TAIL or negative, insert at the end
@@ -101,6 +106,7 @@ namespace CommandaStructures {
                 setPrev(newNode, tail); // Set the previous pointer of the new node to the current tail
                 tail = newNode; // Update the tail to the new node
             }
+            size++;
             return;
         }
         // If the spot is positive, insert at the specified position
@@ -120,6 +126,7 @@ namespace CommandaStructures {
             }
             setNext(current, newNode); // Set the next pointer of current to the new node
         }
+        size++; // Increment the size of the double linked list
     }
 
     /*
@@ -146,27 +153,11 @@ namespace CommandaStructures {
                     tail = current->prev; // Update tail to the previous node
                 }
                 delete current; // Delete the current node
+                size--; // Decrement the size of the double linked list
                 return; // Exit after removing the first occurrence
             }
             current = current->next; // Move to the next node
         }
-    }
-
-    /*
-     * Name: DoubleLinkedList.size
-     * Description: Returns the number of nodes in the double linked list.
-     * Parameters: None
-     * Returns: int - The size of the double linked list.
-     */
-    template<typename T>
-    int DoubleLinkedList<T>::size() const {
-        int count = 0; // Initialize a counter to zero
-        Node<T>* current = getHead(); // Start from the head of the list
-        while (current) { // Traverse through each node
-            count++; // Increment the counter for each node
-            current = current->next; // Move to the next node
-        }
-        return count; // Return the total count of nodes
     }
 
     /*

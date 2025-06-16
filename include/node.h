@@ -4,7 +4,6 @@
 
 #ifndef NODE_H
 #define NODE_H
-#include "linkedlist.h"
 
 namespace CommandaStructures {
 

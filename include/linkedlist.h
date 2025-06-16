@@ -17,28 +17,34 @@ namespace CommandaStructures {
         ~LinkedList();
         void insert(const T& value, int spot = TAIL); // insert a new node with the given value to the end of the list (spot is optional)
         void remove(const T& value);                  // Remove the first node with the given value from the list
-        int size();                                   // Return the number of nodes in the linked list
         template<typename Func>                       // Function to display the contents of the linked list using a custom function
         void display(Func func) const;                // Display the contents using a custom function
-        Node<T>* getHead() const;                     // Public getter for head
+        Node<T>* getHead() const {return head;}       // Public getter for head
+        Node<T>* getTail() const {return tail;}       // Public getter for tail
+        [[nodiscard]] size_t getSize() const {return size;}         // Public getter for size
         Node<T>* findNode(const T& value) const;      // Find a node with the given value and return a pointer to it
+        void removeNode(Node<T>* node);           // Remove a specific node from the list, return the
+        void clear();                                 // Clear the linked list by deleting all nodes
         enum Spot {
             HEAD = 0, // Enum to define positions for appending nodes
             TAIL = -1 // TAIL is used to append at the end of the list (default behavior)
         };
     private:
+        size_t size;   // Size of the linked list
         Node<T>* head; // Pointer to the first node in the list
+        Node<T>* tail; // Pointer to the last node in the list
         // Enum to define positions for appending nodes
     };
 
     /*
      * Name: LinkedList constructor
-     * Description: Initializes an empty linked list with the head pointer set to nullptr.
+     * Description: Initializes an empty linked list with the head and tail pointer set to nullptr.
      * Parameters: None
      * Returns: void - No return value.
      */
     template<typename T>
-    LinkedList<T>::LinkedList() : head(nullptr) {}
+    LinkedList<T>::LinkedList() : size(0), head(nullptr), tail(nullptr) {
+    }
 
     /*
      * Name: LinkedList destructor
@@ -54,7 +60,9 @@ namespace CommandaStructures {
             delete current; // Delete the current node
             current = nextNode; // Move to the next node
         }
+        size = 0; // Reset size to zero
         head = nullptr; // Set head to nullptr after deletion
+        tail = nullptr; // Set tail to nullptr after deletion
     }
 
     /*
@@ -72,11 +80,15 @@ namespace CommandaStructures {
         if (spot == HEAD) {
             newNode->next = head;
             head = newNode;
+            if (!tail) tail = newNode; // If list was empty, set tail
+            size++; // Increment size
             return;
         }
         // If the head is null, set the new node as the head
         if (!head) {
             head = newNode;
+            tail = newNode; // If the list was empty, set tail to the new node as well
+            size++;
             return;
         }
         // Set the current node to the head and traverse to the desired spot
@@ -95,6 +107,8 @@ namespace CommandaStructures {
         }
         newNode->next = current->next;
         current->next = newNode;
+        if (!newNode->next) tail = newNode; // If inserted at end, update tail
+        size++; // Increment size
     }
 
     /*
@@ -112,6 +126,7 @@ namespace CommandaStructures {
             Node<T>* temp = head;
             head = head->next;
             delete temp;
+            size--;
             return;
         }
         // Otherwise, traverse the list to find the node with the given value
@@ -125,28 +140,9 @@ namespace CommandaStructures {
             Node<T>* temp = current->next;
             current->next = current->next->next;
             delete temp;
+            size--;
         }
         // If we didn't find the node, do nothing
-    }
-
-    /*
-     * Name: LinkedList.size
-     * Description: Returns the number of nodes in the linked list.
-     * Parameters: None
-     * Returns: int - The size of the linked list.
-     */
-    template<typename T>
-    int LinkedList<T>::size() {
-        // Initialize a counter to zero
-        int count = 0;
-        // Get the head of the list and traverse through each node, incrementing the counter
-        Node<T>* current = head;
-        while (current) {
-            count++;
-            current = current->next;
-        }
-        // Return the total count of nodes
-        return count;
     }
 
     /*
@@ -170,17 +166,6 @@ namespace CommandaStructures {
     }
 
     /*
-     * Name: LinkedList.getHead
-     * Description: Returns the head of the linked list.
-     * Parameters: None
-     * Returns: Node<T>* - Pointer to the head node.
-     */
-    template<typename T>
-    Node<T>* LinkedList<T>::getHead() const {
-        return head; // Return the head of the linked list
-    }
-
-    /*
      * Name: LinkedList.findNode
      * Description: Finds a node with the given value and returns a pointer to it.
      * Parameters: value - The value to search for in the linked list.
@@ -199,8 +184,62 @@ namespace CommandaStructures {
         std::cerr << "No such node" << std::endl;
         return nullptr; // If no node with the value is found, return nullptr
     }
+
+    /*
+     * Name: LinkedList.removeNode
+     * Description: Removes a specific node from the linked list.
+     * Parameters: node - Pointer to the node to be removed.
+     * Returns: void - No return value.
+     */
+    template<typename T>
+    void LinkedList<T>::removeNode(Node<T>* node) {
+        if (!node || !head) return; // If the node is null or the list is empty, do nothing
+        if (node == head) {
+            head = head->next; // Update the head pointer
+            if (node == tail) {
+                tail = nullptr;  // The list had one element
+            }
+            delete node; // Delete the node
+            size--; // Decrement the size of the list
+            return;
+        }
+        // Traverse the list to find the previous node
+        Node<T>* current = head;
+        while (current && current->next != node) {
+            current = current->next; // Move to the next node
+        }
+        // If we found the previous node, update its next pointer to skip the node to be removed
+        if (current) {
+            current->next = node->next; // Bypass the node to be removed
+            if (node == tail) {
+                tail = current; // Update the tail if the removed node was the last one
+            }
+            delete node; // Delete the node
+            size--; // Decrement the size of the list
+        }
+    }
+
+    /*
+     * Name: LinkedList.clear
+     * Description: Clears the linked list by deleting all nodes.
+     * Parameters: None
+     * Returns: void - No return value.
+     */
+    template<typename T>
+    void LinkedList<T>::clear() {
+        Node<T>* current = head; // Start from the head of the list
+        while (current) {
+            Node<T>* nextNode = current->next; // Store the next node
+            delete current; // Delete the current node
+            current = nextNode; // Move to the next node
+        }
+        head = nullptr; // Set head to nullptr after deletion
+        tail = nullptr; // Set tail to nullptr after deletion
+        size = 0; // Reset size to zero
+    }
+
+
+
 }
 
 #endif //LINKEDLIST_H
-
-

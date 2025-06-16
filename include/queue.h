@@ -8,10 +8,11 @@
 #include "linkedlist.h"
 /*Notes:
  * Functions in the queue class:
- * enqueue - Adds a new element to the end of the queue.
- * dequeue - Removes and returns the front element of the queue.
- * getLast - Returns the last element of the queue without removing it.
- * getFirst - Returns the first element of the queue without removing it.
+ * push - Adds a new element to the end of the queue.
+ * pop - Removes and returns the front element of the queue.
+ * back - Returns the last element of the queue without removing it.
+ * front - Returns the first element of the queue without removing it.
+ * emplace - Adds a new element to the end of the queue, allowing for in-place construction.
  * getSize - Returns the number of elements in the queue.
  * isEmpty - Checks if the queue is empty.
  */
@@ -22,15 +23,14 @@ namespace CommandaStructures {
     public:
         Queue();
         ~Queue();
-        void enqueue(const T& value); // Adds a new element to the end of the queue
-        T dequeue();                  // Removes and returns the front element of the queue
-        T& getFirst() const;          // Returns the first element without removing it
-        T& getLast() const;           // Returns the last element without removing it
-        int getSize() const;       // Returns the number of elements in the queue
-        bool isEmpty() const;         // Checks if the queue is empty
+        void push(const T& value);                  // Adds a new element to the end of the queue
+        T pop();                                   // Removes and returns the front element of the queue
+        T& front() const;                           // Returns the first element without removing it
+        T& back() const;                            // Returns the last element without removing it
+        [[nodiscard]] int getSize() const {return list.getSize();};       // Returns the number of elements in the queue
+        [[nodiscard]] bool isEmpty() const;                          // Checks if the queue is empty
     private:
-        LinkedList<T> list;           // Linked list to store the elements of the queue
-        size_t size;                  // Size of the queue
+        LinkedList<T> list;                            // Linked list to store the elements of the queue
     };
 
     /*
@@ -40,7 +40,9 @@ namespace CommandaStructures {
      * Returns: void - No return value.
      */
     template<typename T>
-    Queue<T>::Queue() : size(0) {};
+    Queue<T>::Queue() : list() {
+        // The size is implicitly managed by the LinkedList class
+    }
 
     /*
      * Name: Queue destructor
@@ -49,12 +51,7 @@ namespace CommandaStructures {
      * Returns: void - No return value.
      */
     template<typename T>
-    Queue<T>::~Queue() {
-        // The LinkedList destructor will automatically delete all nodes,
-        // so we do not need to manually delete anything here.
-        // If you want to reset the size counter for safety:
-        size = 0;
-    }
+    Queue<T>::~Queue() = default; // Use the default destructor (no need for custom cleanup since LinkedList handles its own memory)
 
     /*
      * Name: Queue.enqueue
@@ -63,10 +60,9 @@ namespace CommandaStructures {
      * Returns: void - No return value.
      */
     template<typename T>
-    void Queue<T>::enqueue(const T& value) {
+    void Queue<T>::push(const T& value) {
         // Use the insert method of the linked list to add the element
         list.insert(value);
-        size++;
     }
 
     /*
@@ -76,7 +72,7 @@ namespace CommandaStructures {
      * Returns: T - The value of the removed element.
      */
     template<typename T>
-    T Queue<T>::dequeue() {
+    T Queue<T>::pop() {
         // Check if the queue is empty
         if (isEmpty()) {
             throw std::out_of_range("Queue is empty");
@@ -84,7 +80,6 @@ namespace CommandaStructures {
         Node<T>* headNode = list.getHead();
         T value = headNode->getData();
         list.remove(value);
-        size--;
         return value;
     }
 
@@ -95,7 +90,7 @@ namespace CommandaStructures {
      * Returns: T& - Reference to the first element.
      */
     template<typename T>
-    T& Queue<T>::getFirst() const {
+    T& Queue<T>::front() const {
         // Check if the queue is empty
         if (isEmpty()) {
             throw std::out_of_range("Queue is empty");
@@ -110,7 +105,7 @@ namespace CommandaStructures {
      * Returns: T& - Reference to the last element.
      */
     template<typename T>
-    T& Queue<T>::getLast() const {
+    T& Queue<T>::back() const {
         // Check if the queue is empty
         if (isEmpty()) {
             throw std::out_of_range("Queue is empty");
@@ -124,17 +119,6 @@ namespace CommandaStructures {
     }
 
     /*
-     * Name: Queue.getSize
-     * Description: Returns the number of elements in the queue.
-     * Parameters: None
-     * Returns: int - The size of the queue.
-     */
-    template<typename T>
-    int Queue<T>::getSize() const {
-        return size; // Return the size of the queue
-    }
-
-    /*
      * Name: Queue.isEmpty
      * Description: Checks if the queue is empty.
      * Parameters: None
@@ -142,7 +126,7 @@ namespace CommandaStructures {
      */
     template<typename T>
     bool Queue<T>::isEmpty() const {
-        return size == 0; // Return true if size is zero, false otherwise
+        return getSize() == 0; // Return true if size is zero, false otherwise
     }
 }
 
