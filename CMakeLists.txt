@@ -10,13 +10,14 @@ include_directories(include)
 # Main executable
 add_executable(CommandaStructures
         src/main.cpp
-)
-
-# Test executable for iterators
-add_executable(TestIterators
-        src/test_iterators.cpp
+        examples/queue_example.cpp
+        examples/linkedlist_example.cpp
+        examples/doublelinkedlist_example.cpp
+        examples/deque_example.cpp
+        examples/ringbuffer_example.cpp
+        examples/stack_example.cpp
+        examples/iterators_example.cpp
 )
 
 # Link the include directory to both targets
 target_include_directories(CommandaStructures PRIVATE include)
-target_include_directories(TestIterators PRIVATE include)

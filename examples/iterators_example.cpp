@@ -1,6 +1,7 @@
 //
 // Created by Levi on 2025-06-16.
 //
+
 #include <iostream>
 #include <algorithm>
 #include "linkedlist.h"
@@ -12,8 +13,7 @@ using namespace CommandaStructures;
 using namespace CommandaStructures::Single;
 using namespace CommandaStructures::Double;
 
-
-int main() {
+void runIteratorsTest() {
     std::cout << "=== LinkedList Iterator Test ===\n";
     LinkedList<int> list;
     list.insert(1);
@@ -66,6 +66,4 @@ int main() {
         std::cout << *it << " ";
 
     std::cout << "\n";
-
-    return 0;
 }

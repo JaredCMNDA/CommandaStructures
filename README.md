@@ -47,14 +47,15 @@ When working on various C++ projects, it's common to need basic data structures.
    }
    ```
 
-5. **See `src/main.cpp` and `src/test_iterators.cpp` for demos.**
+5. **See `src/main.cpp` and `examples/` for demos.**
    - `main.cpp`: demos for basic usage and typical operations.
-   - `test_iterators.cpp`: shows how to use STL algorithms like `std::find`, `std::for_each`, `std::copy`, and reverse iteration.
+   - `examples/`: contains example files for each structure (e.g., `queue_example.cpp`, `deque_example.cpp`, etc.)
 
 ## Project Structure
 
 - `include/` — Header files for all data structures (`linkedlist.h`, `doublelinkedlist.h`, `queue.h`, `stack.h`, `deque.h`, `ringbuffer.h`, `nodes.h`)
-- `src/` — Example usage and tests (`main.cpp`, `test_iterators.cpp`)
+- `src/` — Main entry point and test runner (`main.cpp`)
+- `examples/` — Example usage and demos for each structure
 - `CMakeLists.txt` — CMake build configuration
 
 ## Notes
@@ -62,6 +63,7 @@ When working on various C++ projects, it's common to need basic data structures.
 - All data structures are implemented as C++20 templates and support custom types (as long as `operator==` is defined).
 - Iterators implement STL-compatible traits so algorithms like `std::find()` and `std::copy()` work out-of-the-box.
 - Reverse iterators (`rbegin()` / `rend()`) are available in structures based on `DoubleLinkedList`.
+- See the `examples/` folder for real-world usage and custom type support.
 
 ## License
 
