@@ -4,16 +4,16 @@ CommandaStructures is a personal C++ library of fundamental data structures, des
 
 ## Features
 
-- **Linked List**: Generic singly linked list implementation.
-- **Double Linked List**: Generic doubly linked list implementation.
-- **Queue**: Generic queue built on top of the singly linked list.
-- **Stack**: Generic stack built on top of the singly linked list.
-- **Deque**: Generic double-ended queue using a doubly linked list.
-- **Ring Buffer**: Fixed-size circular buffer with optional overwrite mode.
+- **Linked List**: Generic singly linked list implementation with iterator support.
+- **Double Linked List**: Generic doubly linked list with forward and reverse iterators.
+- **Queue**: Generic FIFO queue built on a singly linked list. Includes STL-compatible iterators.
+- **Stack**: Generic LIFO stack built on a singly linked list. Also supports iteration.
+- **Deque**: Double-ended queue implemented using a doubly linked list. Full bidirectional iteration.
+- **Ring Buffer**: Fixed-size circular buffer with optional overwrite mode and iterator access.
 
 ## Why?
 
-When working on various C++ projects, it's common to need basic data structures. Instead of copying and pasting code or rewriting from scratch, CommandaStructures provides a central place for reusable, template-based implementations.
+When working on various C++ projects, it's common to need basic data structures. Instead of copying and pasting code or rewriting from scratch, CommandaStructures provides a central place for reusable, template-based implementations with STL-style iteration.
 
 ## Usage
 
@@ -36,35 +36,32 @@ When working on various C++ projects, it's common to need basic data structures.
    Deque<char> charDeque;
    RingBuffer<int> intBuffer(10); // 10 element buffer
    ```
-4. **Example: Using DoubleLinkedList**
+4. **Iterate through structures** using standard loops:
    ```cpp
-   struct MyData {
-       int id;
-       std::string name;
-       bool operator==(const MyData& other) const { return id == other.id && name == other.name; }
-   };
+   for (auto& val : charDeque) {
+       std::cout << val << std::endl;
+   }
 
-   DoubleLinkedList<MyData> list;
-   list.insert({1, "Alice"}, DoubleLinkedList<MyData>::HEAD);
-   list.insert({2, "Bob"}, DoubleLinkedList<MyData>::TAIL);
-   list.remove({1, "Alice"});
+   for (auto it = doubleList.rbegin(); it != doubleList.rend(); ++it) {
+       std::cout << *it << std::endl;
+   }
    ```
 
-5. **See `src/main.cpp` for more example usage and tests.**
-   - There are test/demo functions for each structure (e.g., `linkedListTest`, `queueIntTest`, `doubleLinkedListTest`, `dequeTest`, `stackTest`, `ringBufferTest`).
-   - These show how to use custom structs, display functions, and typical operations.
+5. **See `src/main.cpp` and `src/test_iterators.cpp` for demos.**
+   - `main.cpp`: demos for basic usage and typical operations.
+   - `test_iterators.cpp`: shows how to use STL algorithms like `std::find`, `std::for_each`, `std::copy`, and reverse iteration.
 
 ## Project Structure
 
-- `include/` — Header files for all data structures (`linkedlist.h`, `doublelinkedlist.h`, `queue.h`, `stack.h`, `deque.h`, `ringbuffer.h`, `node.h`)
-- `src/` — Example usage and tests (`main.cpp`)
+- `include/` — Header files for all data structures (`linkedlist.h`, `doublelinkedlist.h`, `queue.h`, `stack.h`, `deque.h`, `ringbuffer.h`, `nodes.h`)
+- `src/` — Example usage and tests (`main.cpp`, `test_iterators.cpp`)
 - `CMakeLists.txt` — CMake build configuration
 
 ## Notes
 
-- All data structures are implemented as C++ templates and support custom types (structs/classes) as long as you define `operator==` for your type.
-- The code is intended for learning, experimentation, and as a reusable base for future projects.
-- Contributions and suggestions are welcome!
+- All data structures are implemented as C++20 templates and support custom types (as long as `operator==` is defined).
+- Iterators implement STL-compatible traits so algorithms like `std::find()` and `std::copy()` work out-of-the-box.
+- Reverse iterators (`rbegin()` / `rend()`) are available in structures based on `DoubleLinkedList`.
 
 ## License
 

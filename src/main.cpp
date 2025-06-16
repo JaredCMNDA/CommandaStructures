@@ -12,12 +12,7 @@ using namespace std;
 using namespace CommandaStructures;
 using namespace CommandaStructures::Double;
 using namespace CommandaStructures::Single;
-// This is a simple c++ program for relearning queue, stacks, linked lists, trees, etc.
 
-/*TO DO:
- * add tail pointer to linked list
- *
- */
 
 void linkedListTest() {
     // Create two linked lists, both will have different data types (e.g., two diff sensors give diff parameters)
