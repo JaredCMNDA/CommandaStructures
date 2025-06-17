@@ -1,11 +1,12 @@
 //
 // Created by Levi on 2025-06-16.
 //
-#include <iostream>
 #include "queue.h"
+#include <iostream>
 using namespace CommandaStructures;
 
-void runQueueIntTest() {
+void runQueueIntTest()
+{
     // Create a queue of integers
     Queue<int> intQueue;
     // push some integers
@@ -24,7 +25,8 @@ void runQueueIntTest() {
     std::cout << "Queue size: " << intQueue.getSize() << std::endl;
     std::cout << "Is queue empty? " << (intQueue.isEmpty() ? "Yes" : "No") << std::endl;
     // Dequeue all elements
-    while (!intQueue.isEmpty()) {
+    while (!intQueue.isEmpty())
+    {
         std::cout << "Dequeued element: " << intQueue.pop() << std::endl;
     }
     // Check if the queue is empty again
@@ -32,11 +34,14 @@ void runQueueIntTest() {
     std::cout << "Is queue empty? " << (intQueue.isEmpty() ? "Yes" : "No") << std::endl;
 }
 
-void runQueueTemplateTest() {
+void runQueueTemplateTest()
+{
     // Create a queue of custom objects
     // Pretend this is a temperature sensor data structure?
-    // Imagine we load this data from a file or a database, sensorName -> temp.1, temp.2, etc for multiple sensors?
-    struct sampleData {
+    // Imagine we load this data from a file or a database, sensorName -> temp.1, temp.2, etc for
+    // multiple sensors?
+    struct sampleData
+    {
         std::string sensorName;
         int timeStamp;
         int samplingRate;
@@ -44,18 +49,17 @@ void runQueueTemplateTest() {
         int waterTemperature;
 
         // Define equality operator
-        bool operator==(const sampleData& other) const {
-            return sensorName == other.sensorName &&
-                   timeStamp == other.timeStamp &&
-                   samplingRate == other.samplingRate &&
-                   airTemperature == other.airTemperature &&
+        bool operator==(const sampleData& other) const
+        {
+            return sensorName == other.sensorName && timeStamp == other.timeStamp &&
+                   samplingRate == other.samplingRate && airTemperature == other.airTemperature &&
                    waterTemperature == other.waterTemperature;
         }
 
-        std::string display() const {
+        std::string display() const
+        {
             // Format the display of the sample data
-            return "Sensor: " + sensorName +
-                   ", Timestamp: " + std::to_string(timeStamp) +
+            return "Sensor: " + sensorName + ", Timestamp: " + std::to_string(timeStamp) +
                    ", Sampling Rate: " + std::to_string(samplingRate) +
                    ", Air Temp: " + std::to_string(airTemperature) +
                    ", Water Temp: " + std::to_string(waterTemperature);
@@ -79,7 +83,8 @@ void runQueueTemplateTest() {
     std::cout << "Queue size: " << dataQueue.getSize() << std::endl;
     std::cout << "Is queue empty? " << (dataQueue.isEmpty() ? "Yes" : "No") << std::endl;
     // Dequeue all elements
-    while (!dataQueue.isEmpty()) {
+    while (!dataQueue.isEmpty())
+    {
         std::cout << "Dequeued element: " << dataQueue.pop().sensorName << std::endl;
     }
     // Check if the queue is empty again

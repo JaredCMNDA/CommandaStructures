@@ -1,21 +1,24 @@
 //
 // Created by Levi on 2025-06-16.
 //
-#include <iostream>
 #include "linkedlist.h"
+#include <iostream>
 using namespace CommandaStructures;
 
-void runLinkedListExample() {
-    // Create two linked lists, both will have different data types (e.g., two diff sensors give diff parameters)
-    // Speed sensor linked list
-    struct SpeedData {
+void runLinkedListExample()
+{
+    // Create two linked lists, both will have different data types (e.g., two diff sensors give
+    // diff parameters) Speed sensor linked list
+    struct SpeedData
+    {
         double speed;
         double timestamp; // Timestamp of the speed measurement
     };
     SingleNode<SpeedData>* speedHead = nullptr;
 
     // Turbidity sensor linked list
-    struct TurbidityData {
+    struct TurbidityData
+    {
         double turbidity;
         double timestamp; // Timestamp of the turbidity measurement
     };
@@ -36,12 +39,17 @@ void runLinkedListExample() {
 
     // Display the speed linked list
     std::cout << "Speed Linked List:" << std::endl;
-    speedList.display([](const SpeedData& data) {
-        std::cout << "Speed: " << data.speed << " at timestamp: " << data.timestamp << std::endl;
-    });
+    speedList.display(
+        [](const SpeedData& data) {
+            std::cout << "Speed: " << data.speed << " at timestamp: " << data.timestamp
+                      << std::endl;
+        });
     // Display the turbidity linked list
     std::cout << "Turbidity Linked List:" << std::endl;
-    turbidityList.display([](const TurbidityData& data) {
-        std::cout << "Turbidity: " << data.turbidity << " at timestamp: " << data.timestamp << std::endl;
-    });
+    turbidityList.display(
+        [](const TurbidityData& data)
+        {
+            std::cout << "Turbidity: " << data.turbidity << " at timestamp: " << data.timestamp
+                      << std::endl;
+        });
 }

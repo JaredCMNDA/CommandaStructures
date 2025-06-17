@@ -12,9 +12,8 @@ extern void runStackTest();
 extern void runRingBufferTest();
 extern void runIteratorsTest();
 
-
-
-int main() {
+int main()
+{
 
     runIteratorsTest();
 

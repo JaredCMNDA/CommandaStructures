@@ -2,18 +2,19 @@
 // Created by Levi on 2025-06-16.
 //
 
-#include <iostream>
-#include <algorithm>
+#include "deque.h"
 #include "linkedlist.h"
 #include "queue.h"
-#include "deque.h"
 #include "stack.h"
+#include <algorithm>
+#include <iostream>
 
 using namespace CommandaStructures;
 using namespace CommandaStructures::Single;
 using namespace CommandaStructures::Double;
 
-void runIteratorsTest() {
+void runIteratorsTest()
+{
     std::cout << "=== LinkedList Iterator Test ===\n";
     LinkedList<int> list;
     list.insert(1);
@@ -21,13 +22,15 @@ void runIteratorsTest() {
     list.insert(3);
 
     std::cout << "Original (mutable): ";
-    for (auto& val : list) {
+    for (auto& val : list)
+    {
         std::cout << val << " ";
-        val *= 10;  // mutate during iteration
+        val *= 10; // mutate during iteration
     }
 
     std::cout << "\nAfter mutation: ";
-    for (const auto& val : list) std::cout << val << " ";
+    for (const auto& val : list)
+        std::cout << val << " ";
 
     std::cout << "\nRead-only (cbegin/cend): ";
     for (auto it = list.cbegin(); it != list.cend(); ++it)
@@ -39,15 +42,19 @@ void runIteratorsTest() {
     // ===== Queue Test =====
     std::cout << "=== Queue Iterator Test ===\n";
     Queue<int> queue;
-    for (int i = 1; i <= 3; ++i) queue.push(i);
-    for (const auto& val : queue) std::cout << val << " ";
+    for (int i = 1; i <= 3; ++i)
+        queue.push(i);
+    for (const auto& val : queue)
+        std::cout << val << " ";
     std::cout << "\n";
 
     // ===== Stack Test =====
     std::cout << "=== Stack Iterator Test ===\n";
     Stack<int> stack;
-    for (int i = 1; i <= 3; ++i) stack.push(i * 5); // LIFO
-    for (const auto& val : stack) std::cout << val << " ";
+    for (int i = 1; i <= 3; ++i)
+        stack.push(i * 5); // LIFO
+    for (const auto& val : stack)
+        std::cout << val << " ";
     std::cout << "\n";
 
     // ===== Deque Test =====
