@@ -2,7 +2,7 @@
 BasedOnStyle:  LLVM       # use LLVM defaults, then override below
 IndentWidth:   4          # 4-space indents match the project
 ColumnLimit:   100        # wrap lines (incl. comments) after 100 chars
-ReflowComments:          Always   # wrap long /* … */ and // … comments
+ReflowComments:          true   # wrap long /* … */ and // … comments
 AlignTrailingComments:   true   # line up consecutive // comments
 SpacesBeforeTrailingComments: 1 # code ␠␠// comment
 AllowShortFunctionsOnASingleLine: Empty  # brace goes on next line unless body is empty
