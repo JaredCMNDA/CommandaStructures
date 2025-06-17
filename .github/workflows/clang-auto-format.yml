@@ -1,0 +1,45 @@
+name: Auto-format (clang-format → PR)
+
+# Run after every successful push to any branch
+on: [push]
+
+# The bot must be allowed to write code and open PRs
+permissions:
+  contents: write          # let the Action push commits
+  pull-requests: write     # let the Action open / update PRs
+
+jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+
+    # Skip if this push was created by the bot’s own auto-PR
+    if: github.actor != 'github-actions[bot]'
+
+    steps:
+      # Check out the exact branch that triggered the run
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      # Install clang-format (v14 is fine for C++20)
+      - name: Install clang-format
+        run: sudo apt-get update && sudo apt-get install -y clang-format-14
+
+      # Re-write all C/C++ files in place according to .clang-format
+      - name: Run clang-format
+        run: |
+          clang-format-14 -i --style=file $(git ls-files '*.c' '*.cpp' '*.h' '*.hpp')
+
+      # If any file changed, commit & create (or update) a PR on a separate branch
+      - name: Create or update formatting PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: style/clang-format-${{ github.ref_name }}
+          delete-branch: true                 # auto-delete the branch once merged
+          commit-message: "style: clang-format pass"
+          title: "style: automatic clang-format for `${{ github.ref_name }}`"
+          body: |
+            This pull-request contains **only** formatting changes
+            produced by `clang-format` and no functional code changes.
+          labels: style, automation
+          base: ${{ github.ref_name }}        # target the branch that triggered the workflow
