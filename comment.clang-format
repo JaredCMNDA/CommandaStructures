@@ -1,6 +1,0 @@
-# .clang-format - ClangFormat configuration for CommandaStructures
-BasedOnStyle: LLVM            # Start with LLVM style guidelines as a base
-IndentWidth: 4                # Use 4 spaces for indentation (C++ default in this project)
-ColumnLimit: 100              # Wrap lines at 100 characters (including comments)
-ReflowComments: true          # Automatically wrap/reflow long comments to fit ColumnLimit:contentReference[oaicite:5]{index=5}
-AlignTrailingComments: true   # Align // comments in columns if they are consecutive
