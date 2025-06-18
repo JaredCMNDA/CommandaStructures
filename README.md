@@ -12,7 +12,7 @@ The ASV’s onboard code had to:
 
 Instead of copying snippets from past coursework or online examples, I made a clean, header‑only library—**CommandaStructures**—so the same, well‑tested containers could serve both the ASV firmware and future robotics or data‑processing projects.
 
-(Clean is subjective in this case - some of the code is a bit rough around the edges, but it works and is well documented! [i hope])
+(Clean is subjective in this case - some of the code is a bit rough around the edges, but it works and is well documented! [i hope, honestly])
 ## Features
 
 - **Linked List** – Generic singly linked list with STL‑style iterators  
