@@ -3,7 +3,7 @@
 CommandaStructures is a personal C++ library of fundamental data structures, designed to be reused across multiple projects.
 
 ## Background
-While building an **autonomous surface vehicle (ASV)** for source‑water monitoring, I realised that most embedded C++ firmware still needed hand‑rolled containers for queues, ring buffers and linked lists.  
+While working on an **autonomous surface vehicle (ASV)** for source‑water monitoring, I realised that most embedded C++ firmware still needed hand‑rolled containers for queues, ring buffers and linked lists.  
 The ASV’s onboard code had to:
 
 * log high‑rate sensor data (pH, turbidity, GPS, IMU) without dynamic allocation,
