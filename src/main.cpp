@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stdlib.h> // For random number generation
 
 using namespace std;
 extern void runLinkedListExample();
