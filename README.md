@@ -1,24 +1,39 @@
 # CommandaStructures
 
-CommandaStructures is a personal C++ library of fundamental data structures, designed to be reused across multiple projects. The goal is to avoid rewriting common structures like linked lists, queues, stacks, and more, by maintaining a single, well-tested codebase.
+CommandaStructures is a personal C++ library of fundamental data structures, designed to be reused across multiple projects.
 
+## Background
+While building an **autonomous surface vehicle (ASV)** for source‑water monitoring, I realised that most embedded C++ firmware still needed hand‑rolled containers for queues, ring buffers and linked lists.  
+The ASV’s onboard code had to:
+
+* log high‑rate sensor data (pH, turbidity, GPS, IMU) without dynamic allocation,
+* stream telemetry over LoRa when bandwidth allowed, and
+* run deterministic control loops on a Jetson‑class SBC and a safety MCU.
+
+Instead of copying snippets from past coursework or online examples, I made a clean, header‑only library—**CommandaStructures**—so the same, well‑tested containers could serve both the ASV firmware and future robotics or data‑processing projects.
+
+(Clean is subjective in this case - some of the code is a bit rough around the edges, but it works and is well documented! [i hope])
 ## Features
 
-- **Linked List**: Generic singly linked list implementation with iterator support.
-- **Double Linked List**: Generic doubly linked list with forward and reverse iterators.
-- **Queue**: Generic FIFO queue built on a singly linked list. Includes STL-compatible iterators.
-- **Stack**: Generic LIFO stack built on a singly linked list. Also supports iteration.
-- **Deque**: Double-ended queue implemented using a doubly linked list. Full bidirectional iteration.
-- **Ring Buffer**: Fixed-size circular buffer with optional overwrite mode and iterator access.
+- **Linked List** – Generic singly linked list with STL‑style iterators  
+- **Double Linked List** – Bidirectional list with forward/reverse iterators  
+- **Queue** – FIFO queue built on the singly linked list  
+- **Stack** – LIFO stack, also iterator‑friendly  
+- **Deque** – Double‑ended queue implemented on the doubly linked list  
+- **Ring Buffer** – Fixed‑size circular buffer with optional overwrite mode  
 
 ## Why?
 
-When working on various C++ projects, it's common to need basic data structures. Instead of copying and pasting code or rewriting from scratch, CommandaStructures provides a central place for reusable, template-based implementations with STL-style iteration.
+1. **Embedded constraints** – The ASV needed deterministic memory usage and zero external dependencies  
+2. **Reusability** – I no longer want to rewrite core containers for every class project or side build  
+3. **Testing once** – A single library under version control means bugs get fixed everywhere at once  
+4. **Iterator support** – STL‑style iterators let me plug these structures straight into `<algorithm>` without adapters  
 
 ## Usage
 
-1. **Clone or copy** this repository into your project.
-2. **Include** the headers you need in your source files:
+1. **Clone or copy** this repository into your project  
+2. **Include** the headers you need:
+
    ```cpp
    #include "linkedlist.h"
    #include "doublelinkedlist.h"
@@ -27,47 +42,49 @@ When working on various C++ projects, it's common to need basic data structures.
    #include "deque.h"
    #include "ringbuffer.h"
    ```
-3. **Use the data structures** as templates with your own types:
-   ```cpp
-   LinkedList<int> intList;
-   Queue<std::string> stringQueue;
-   DoubleLinkedList<double> doubleList;
-   Stack<float> floatStack;
-   Deque<char> charDeque;
-   RingBuffer<int> intBuffer(10); // 10 element buffer
-   ```
-4. **Iterate through structures** using standard loops:
-   ```cpp
-   for (auto& val : charDeque) {
-       std::cout << val << std::endl;
-   }
 
-   for (auto it = doubleList.rbegin(); it != doubleList.rend(); ++it) {
-       std::cout << *it << std::endl;
-   }
+3. **Instantiate** with your own types:
+
+   ```cpp
+   RingBuffer<float> pHBuffer(300);      // store last 300 pH readings
+   Queue<Telemetry> uplinkQueue;         // telemetry packets awaiting LoRa window
    ```
 
-5. **See `src/main.cpp` and `examples/` for demos.**
-   - `main.cpp`: demos for basic usage and typical operations.
-   - `examples/`: contains example files for each structure (e.g., `queue_example.cpp`, `deque_example.cpp`, etc.)
+4. **Iterate** using range‑based or explicit iterators:
+
+   ```cpp
+   for (auto& pkt : uplinkQueue) send(pkt);
+   ```
+
+See `examples/` and `src/` for working demos.
 
 ## Project Structure
 
-- `include/` — Header files for all data structures (`linkedlist.h`, `doublelinkedlist.h`, `queue.h`, `stack.h`, `deque.h`, `ringbuffer.h`, `nodes.h`)
-- `src/` — Main entry point and test runner (`main.cpp`)
-- `examples/` — Example usage and demos for each structure
-- `CMakeLists.txt` — CMake build configuration
+```
+include/     Header files (linkedlist.h, queue.h, …)
+src/         Main entry and unit tests
+examples/    Usage demos for each structure
+CMakeLists   Build configuration
+```
 
 ## Notes
+No set dates, but some things I would like to add!
 
-- All data structures are implemented as C++20 templates and support custom types (as long as `operator==` is defined).
-- Iterators implement STL-compatible traits so algorithms like `std::find()` and `std::copy()` work out-of-the-box.
-- Reverse iterators (`rbegin()` / `rend()`) are available in structures based on `DoubleLinkedList`.
-- See the `examples/` folder for real-world usage and custom type support.
+1. **Fixed‑capacity matrices and vectors** for lightweight linear algebra on the ASV 
+   - Useful for state estimation, coordinate transformations, etc.
+2. **Compile‑time tables** using constexpr containers for compile‑time data storage
+   - Ideal for static configuration or lookup tables in embedded systems
+   - Push more logic to compile time to reduce runtime overhead
+   - This is something that will probably take a long time and will cause headaches so I am not rushing this :)
+3. **Unit tests** for all structures to ensure reliability
+4. **Iterators** for all structures to support STL algorithms
+   - This is already partially done, but needs more work to be fully compliant (and I want to clean it up a bit)
+
 
 ## License
 
-This is a personal project. Use at your own risk.
+Personal project. Use at your own risk.
 
 ---
-*Created by Levi, 2025*
+
+*Created by Jared, 2025*
